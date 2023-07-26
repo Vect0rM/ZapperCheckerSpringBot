@@ -1,10 +1,11 @@
 package com.skvortsov.zappercheckerspringbot.service;
 
 import com.skvortsov.zappercheckerspringbot.exception.ServiceException;
+import com.skvortsov.zappercheckerspringbot.models.Token;
 
 public interface ZapperBotServiceInterface {
 
-    String getPortfolio() throws ServiceException;
+    Token getPortfolio() throws ServiceException;
     String getNFT() throws ServiceException;
 
 }

@@ -1,6 +1,7 @@
 package com.skvortsov.zappercheckerspringbot.bot;
 
 import com.skvortsov.zappercheckerspringbot.exception.ServiceException;
+import com.skvortsov.zappercheckerspringbot.models.Token;
 import com.skvortsov.zappercheckerspringbot.service.ZapperBotService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,10 +83,17 @@ public class ZapperCheckBot extends TelegramLongPollingBot {
         sendMessage(chatId, formattedText);
     }
     private void portfolioCommand(Long chatId) {
+        Token token;
         String portfolio;
         try {
-            portfolio = zapperBotService.getPortfolio();
-
+            token = zapperBotService.getPortfolio();
+            portfolio = """
+                    Монета: %s,
+                    Цена за 1 штуку: %s $,
+                    Количество монет: %s,
+                    Общая сумма в долларах: %s $
+                    """;
+            portfolio = String.format(portfolio, token.getName(), token.getPrice(), token.getBalance(), token.getBalanceUSD());
         } catch (ServiceException e) {
             log.error("Ошибка получения курса доллара", e);
             portfolio = "Не удалось получить текущий курс доллара. Попробуйте позже.";
